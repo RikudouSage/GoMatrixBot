@@ -165,6 +165,20 @@ func (receiver *Bot) EnableSessionVerification(recoveryKey string) {
 	receiver.recoveryKey = &recoveryKey
 }
 
+func (receiver *Bot) SendMessage(text string, roomID string) error {
+	content := event.MessageEventContent{
+		MsgType: event.MsgText,
+		Body:    text,
+	}
+
+	_, err := receiver.matrix.SendMessageEvent(context.Background(), id.RoomID(roomID), event.EventMessage, content)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (receiver *Bot) login() error {
 	response, err := receiver.matrix.Login(receiver.getCtx(), &mautrix.ReqLogin{
 		Type: mautrix.AuthTypePassword,
