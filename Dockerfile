@@ -11,6 +11,7 @@ COPY . .
 RUN go build .
 
 FROM ubuntu:24.04
+RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/* && apt-get clean
 COPY --from=build /app/MatrixBot /app
 COPY --from=build /usr/lib/x86_64-linux-gnu/libolm* /usr/lib/x86_64-linux-gnu
 
